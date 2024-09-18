@@ -65,8 +65,8 @@ class Relation(object):
 class Event(object):
     @dataclasses.dataclass
     class Argument(object):
-        rule: str
-        entity: Entity
+        role: str
+        object: Union[Entity, Event]
 
     type: str
     trigger: Entity
@@ -296,7 +296,7 @@ class BratParser(object):
                 else:
                     self._raise(RuntimeError(f'Unknown event arg: {arg["id"]}'))
 
-                arguments += [arg_object]
+                arguments += [Event.Argument(role=arg['role'], object=arg_object)]
 
             event = Event(
                 type=match["type"], trigger=trigger, arguments=arguments, id=match["id"]
